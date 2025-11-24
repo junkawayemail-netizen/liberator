@@ -1,5 +1,5 @@
 {
-  "name": "Liberator Junk Removal",
-  "description": "A professional junk removal landing page featuring an AI-powered instant quote estimator using Gemini 2.5 Flash.",
+  "name": "Liberator",
+  "description": "A professional landing page for Liberator featuring an AI-powered instant quote estimator using Gemini 2.5 Flash.",
   "requestFramePermissions": []
 }

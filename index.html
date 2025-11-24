@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Liberator Junk Removal</title>
+    <title>Liberator</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -67,7 +67,7 @@
                         <i data-lucide="truck" class="h-6 w-6 text-white"></i>
                     </div>
                     <span id="logo-text" class="font-bold text-xl tracking-tight text-white transition-colors">
-                        LIBERATOR <span class="text-accent-500">JUNK</span>
+                        LIBERATOR
                     </span>
                 </div>
 
@@ -122,7 +122,7 @@
                 </h1>
                 
                 <p class="text-lg md:text-xl text-slate-300 max-w-xl leading-relaxed">
-                    Liberator Junk Removal handles the heavy lifting so you don't have to. 
+                    Liberator handles the heavy lifting so you don't have to. 
                     From old furniture to construction debris, we clear it out fast, efficiently, and responsibly.
                 </p>
 
@@ -496,7 +496,7 @@
                 </div>
             </div>
             <div class="border-t border-slate-800 mt-12 pt-8 text-center text-sm text-slate-500">
-                <p>&copy; 2024 Liberator Junk Removal. All rights reserved.</p>
+                <p>&copy; 2024 Liberator. All rights reserved.</p>
             </div>
         </div>
     </footer>
@@ -601,7 +601,7 @@
                 const modelId = "gemini-2.5-flash"; 
                 const response = await ai.models.generateContent({
                     model: modelId,
-                    contents: `You are an expert junk removal estimator for a company called 'Liberator Junk Removal'. 
+                    contents: `You are an expert junk removal estimator for a company called 'Liberator'. 
                     Analyze the following list of items provided by a customer and estimate the volume relative to a standard 15 cubic yard truck.
                     
                     Customer Input: "${description}"
@@ -679,7 +679,7 @@
             
             step2Ind.classList.replace('bg-slate-200', 'bg-accent-500');
             step2Ind.classList.replace('text-slate-500', 'text-white');
-            step2Text.classList.replace('text-slate-400', 'text-slate-900');
+            step2Text.classList.replace('text-slate-900', 'text-slate-400');
 
             // Toggle Content
             step1Content.classList.add('hidden');
