@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Liberator Junk Removal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+            },
+            colors: {
+              liberator: {
+                50: '#f0f9ff',
+                100: '#e0f2fe',
+                500: '#0ea5e9',
+                600: '#0284c7',
+                900: '#0c4a6e',
+              },
+              accent: {
+                500: '#f59e0b', // Amber
+                600: '#d97706',
+              }
+            },
+            animation: {
+                fadeIn: 'fadeIn 0.5s ease-in-out',
+            },
+            keyframes: {
+                fadeIn: {
+                    '0%': { opacity: '0', transform: 'translateY(10px)' },
+                    '100%': { opacity: '1', transform: 'translateY(0)' },
+                }
+            }
+          }
+        }
+      }
+    </script>
+    <script type="importmap">
+{
+  "imports": {
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.30.0",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.554.0",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/"
+  }
+}
+</script>
+    <style>
+        /* Smooth scrolling for anchor links */
+        html { scroll-behavior: smooth; }
+    </style>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body class="bg-slate-50 text-slate-900 font-sans antialiased selection:bg-liberator-500 selection:text-white">
+    
+    <!-- Navbar -->
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 bg-transparent py-5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center cursor-pointer" onclick="window.scrollTo(0,0)">
+                    <div class="bg-accent-500 p-2 rounded-lg mr-2">
+                        <i data-lucide="truck" class="h-6 w-6 text-white"></i>
+                    </div>
+                    <span id="logo-text" class="font-bold text-xl tracking-tight text-white transition-colors">
+                        LIBERATOR <span class="text-accent-500">JUNK</span>
+                    </span>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#services" class="nav-link text-white hover:text-accent-500 font-medium transition-colors">Services</a>
+                    <a href="#process" class="nav-link text-white hover:text-accent-500 font-medium transition-colors">How It Works</a>
+                    <a href="#testimonials" class="nav-link text-white hover:text-accent-500 font-medium transition-colors">Reviews</a>
+                    <a href="#quote" class="bg-accent-500 hover:bg-accent-600 text-white px-6 py-2.5 rounded-full font-bold shadow-lg transform hover:-translate-y-0.5 transition-all flex items-center">
+                        <i data-lucide="phone" class="h-4 w-4 mr-2"></i>
+                        Get Quote
+                    </a>
+                </div>
+
+                <!-- Mobile Button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-white focus:outline-none">
+                        <i data-lucide="menu" class="h-6 w-6"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white shadow-xl absolute top-full left-0 w-full px-4 pt-4 pb-6 border-t border-slate-100">
+            <div class="flex flex-col space-y-4">
+                <a href="#services" class="text-slate-600 font-medium block p-2 hover:bg-slate-50 rounded mobile-link">Services</a>
+                <a href="#process" class="text-slate-600 font-medium block p-2 hover:bg-slate-50 rounded mobile-link">How It Works</a>
+                <a href="#testimonials" class="text-slate-600 font-medium block p-2 hover:bg-slate-50 rounded mobile-link">Reviews</a>
+                <a href="#quote" class="bg-accent-500 text-white text-center py-3 rounded-lg font-bold shadow-md mobile-link">Get a Free Quote</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="relative bg-slate-900 min-h-screen flex items-center pt-20 overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <img src="https://picsum.photos/1920/1080?grayscale&blur=2" alt="Clean Living Room" class="w-full h-full object-cover opacity-20" />
+            <div class="absolute inset-0 bg-gradient-to-r from-slate-900 via-slate-900/90 to-transparent"></div>
+        </div>
+
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full grid md:grid-cols-2 gap-12 items-center">
+            <div class="text-left space-y-8">
+                <div class="inline-flex items-center bg-liberator-900/50 border border-liberator-500/30 rounded-full px-4 py-1.5 backdrop-blur-sm">
+                    <span class="flex h-2 w-2 rounded-full bg-green-400 mr-2 animate-pulse"></span>
+                    <span class="text-liberator-100 text-sm font-semibold tracking-wide uppercase">Available for Same-Day Service</span>
+                </div>
+                
+                <h1 class="text-5xl md:text-6xl lg:text-7xl font-extrabold text-white leading-tight">
+                    Reclaim Your <br />
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-accent-500 to-yellow-400">Freedom</span>
+                </h1>
+                
+                <p class="text-lg md:text-xl text-slate-300 max-w-xl leading-relaxed">
+                    Liberator Junk Removal handles the heavy lifting so you don't have to. 
+                    From old furniture to construction debris, we clear it out fast, efficiently, and responsibly.
+                </p>
+
+                <div class="flex flex-col sm:flex-row gap-4 pt-4">
+                    <a href="#quote" class="group bg-accent-500 hover:bg-accent-600 text-white px-8 py-4 rounded-xl font-bold text-lg shadow-lg shadow-accent-500/30 flex items-center justify-center transition-all transform hover:-translate-y-1">
+                        Get Instant Price
+                        <i data-lucide="arrow-right" class="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform"></i>
+                    </a>
+                    <a href="#process" class="px-8 py-4 rounded-xl font-semibold text-white border border-slate-600 hover:bg-white/10 transition-colors flex items-center justify-center">
+                        How It Works
+                    </a>
+                </div>
+
+                <div class="pt-8 border-t border-slate-700/50 grid grid-cols-2 gap-4">
+                    <div class="flex items-center text-slate-300">
+                        <i data-lucide="check-circle-2" class="text-green-400 mr-2 h-5 w-5"></i>
+                        <span>Upfront Pricing</span>
+                    </div>
+                    <div class="flex items-center text-slate-300">
+                        <i data-lucide="check-circle-2" class="text-green-400 mr-2 h-5 w-5"></i>
+                        <span>Eco-Friendly Disposal</span>
+                    </div>
+                    <div class="flex items-center text-slate-300">
+                        <i data-lucide="check-circle-2" class="text-green-400 mr-2 h-5 w-5"></i>
+                        <span>Licensed & Insured</span>
+                    </div>
+                    <div class="flex items-center text-slate-300">
+                        <i data-lucide="check-circle-2" class="text-green-400 mr-2 h-5 w-5"></i>
+                        <span>Timely Service</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hidden md:block relative">
+                <div class="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-slate-800 transform rotate-2 hover:rotate-0 transition-transform duration-500">
+                     <img src="https://picsum.photos/800/600" alt="Junk Removal Team" class="w-full h-auto" />
+                     <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
+                        <p class="text-white font-bold text-lg">"Fastest service in town!"</p>
+                        <div class="flex text-yellow-400 mt-1">★★★★★</div>
+                     </div>
+                </div>
+                <div class="absolute -bottom-6 -left-6 bg-white p-4 rounded-xl shadow-xl flex items-center space-x-3 animate-bounce" style="animation-duration: 3s">
+                    <div class="bg-green-100 p-2 rounded-full">
+                        <i data-lucide="check-circle-2" class="text-green-600 h-6 w-6"></i>
+                    </div>
+                    <div>
+                        <p class="text-slate-900 font-bold">450+ Jobs Done</p>
+                        <p class="text-slate-500 text-xs">This Month</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Services Section -->
+    <section id="services" class="py-24 bg-slate-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <span class="text-accent-600 font-bold uppercase tracking-wider text-sm">What We Haul</span>
+                <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 mt-2">Professional Services</h2>
+                <div class="w-20 h-1 bg-accent-500 mx-auto mt-4 rounded-full"></div>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Service 1 -->
+                <div class="bg-white rounded-2xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100 group">
+                    <div class="w-14 h-14 bg-liberator-50 rounded-xl flex items-center justify-center mb-6 group-hover:bg-liberator-500 transition-colors duration-300">
+                        <i data-lucide="home" class="h-6 w-6 text-liberator-600 group-hover:text-white transition-colors duration-300"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3 group-hover:text-liberator-600 transition-colors">Residential Cleanouts</h3>
+                    <p class="text-slate-600 leading-relaxed">Whole house, garage, attic, and basement cleanouts. We reclaim your living space.</p>
+                </div>
+                <!-- Service 2 -->
+                <div class="bg-white rounded-2xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100 group">
+                    <div class="w-14 h-14 bg-liberator-50 rounded-xl flex items-center justify-center mb-6 group-hover:bg-liberator-500 transition-colors duration-300">
+                        <i data-lucide="sofa" class="h-6 w-6 text-liberator-600 group-hover:text-white transition-colors duration-300"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3 group-hover:text-liberator-600 transition-colors">Furniture Removal</h3>
+                    <p class="text-slate-600 leading-relaxed">Couches, mattresses, tables, and bulky items. We do the heavy lifting safely.</p>
+                </div>
+                <!-- Service 3 -->
+                <div class="bg-white rounded-2xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100 group">
+                    <div class="w-14 h-14 bg-liberator-50 rounded-xl flex items-center justify-center mb-6 group-hover:bg-liberator-500 transition-colors duration-300">
+                        <i data-lucide="monitor" class="h-6 w-6 text-liberator-600 group-hover:text-white transition-colors duration-300"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3 group-hover:text-liberator-600 transition-colors">Appliance Recycling</h3>
+                    <p class="text-slate-600 leading-relaxed">Refrigerators, washers, dryers. We ensure eco-friendly disposal and recycling.</p>
+                </div>
+                 <!-- Service 4 -->
+                 <div class="bg-white rounded-2xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100 group">
+                    <div class="w-14 h-14 bg-liberator-50 rounded-xl flex items-center justify-center mb-6 group-hover:bg-liberator-500 transition-colors duration-300">
+                        <i data-lucide="hammer" class="h-6 w-6 text-liberator-600 group-hover:text-white transition-colors duration-300"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3 group-hover:text-liberator-600 transition-colors">Construction Debris</h3>
+                    <p class="text-slate-600 leading-relaxed">Wood, drywall, and renovation waste removal for contractors and DIYers.</p>
+                </div>
+                 <!-- Service 5 -->
+                 <div class="bg-white rounded-2xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100 group">
+                    <div class="w-14 h-14 bg-liberator-50 rounded-xl flex items-center justify-center mb-6 group-hover:bg-liberator-500 transition-colors duration-300">
+                        <i data-lucide="briefcase" class="h-6 w-6 text-liberator-600 group-hover:text-white transition-colors duration-300"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3 group-hover:text-liberator-600 transition-colors">Commercial Jobs</h3>
+                    <p class="text-slate-600 leading-relaxed">Office furniture, retail cleanouts, and foreclosure cleanups. Professional & discreet.</p>
+                </div>
+                 <!-- Service 6 -->
+                 <div class="bg-white rounded-2xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100 group">
+                    <div class="w-14 h-14 bg-liberator-50 rounded-xl flex items-center justify-center mb-6 group-hover:bg-liberator-500 transition-colors duration-300">
+                        <i data-lucide="trash-2" class="h-6 w-6 text-liberator-600 group-hover:text-white transition-colors duration-300"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3 group-hover:text-liberator-600 transition-colors">Yard Waste</h3>
+                    <p class="text-slate-600 leading-relaxed">Branches, leaves, fencing, and general storm cleanup.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quote Form Section -->
+    <section id="quote" class="py-24 bg-liberator-900 relative">
+        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
+        
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-12">
+                <span class="text-accent-500 font-bold uppercase tracking-wider text-sm">Start Your Liberation</span>
+                <h2 class="text-3xl md:text-4xl font-extrabold text-white mt-2">Get an Instant AI Estimate</h2>
+                <p class="text-slate-400 mt-4 max-w-2xl mx-auto">
+                    Describe what you need removed, and our AI will give you an immediate volume and price range estimate.
+                </p>
+            </div>
+
+            <div class="bg-white rounded-3xl shadow-2xl overflow-hidden">
+                <div class="grid md:grid-cols-5 h-full min-h-[500px]">
+                    <!-- Left Panel -->
+                    <div class="md:col-span-3 p-8 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center space-x-2 mb-6">
+                                <div id="step-indicator-1" class="h-8 w-8 rounded-full flex items-center justify-center font-bold text-sm bg-accent-500 text-white transition-colors">1</div>
+                                <span id="step-text-1" class="font-semibold text-slate-900 transition-colors">Describe Junk</span>
+                                <div class="w-8 h-0.5 bg-slate-200"></div>
+                                <div id="step-indicator-2" class="h-8 w-8 rounded-full flex items-center justify-center font-bold text-sm bg-slate-200 text-slate-500 transition-colors">2</div>
+                                <span id="step-text-2" class="font-semibold text-slate-400 transition-colors">Book It</span>
+                            </div>
+
+                            <!-- Step 1 Form -->
+                            <div id="step-1-content" class="space-y-6">
+                                <div>
+                                    <label htmlFor="description" class="block text-sm font-medium text-slate-700 mb-2">
+                                        What needs to go? (Be specific)
+                                    </label>
+                                    <textarea id="quote-description" rows="6" class="w-full rounded-xl border border-slate-300 shadow-sm focus:border-accent-500 focus:ring-accent-500 bg-slate-50 p-4 text-slate-900 resize-none outline-none" placeholder="e.g., 1 old sofa, 5 black garbage bags of clothes, a broken dishwasher..."></textarea>
+                                    <p class="text-xs text-slate-500 mt-2">*Powered by Gemini AI for instant accuracy.</p>
+                                </div>
+                                <button id="analyze-btn" class="w-full bg-slate-900 hover:bg-slate-800 text-white py-4 rounded-xl font-bold flex items-center justify-center transition-all disabled:opacity-50 disabled:cursor-not-allowed">
+                                    <span id="btn-text-default" class="flex items-center">
+                                        <i data-lucide="calculator" class="mr-2 h-5 w-5"></i>
+                                        Calculate Estimate
+                                    </span>
+                                    <span id="btn-text-loading" class="hidden flex items-center">
+                                        <i data-lucide="loader-2" class="mr-2 h-5 w-5 animate-spin"></i>
+                                        Analyzing Load...
+                                    </span>
+                                </button>
+                            </div>
+
+                            <!-- Step 2 Form (Hidden initially) -->
+                            <div id="step-2-content" class="hidden space-y-4 animate-fadeIn">
+                                <h3 class="text-lg font-bold text-slate-900">Finish Booking</h3>
+                                <div class="grid grid-cols-2 gap-4">
+                                   <input type="text" placeholder="First Name" class="p-3 rounded-lg border border-slate-200 bg-slate-50 w-full" />
+                                   <input type="text" placeholder="Last Name" class="p-3 rounded-lg border border-slate-200 bg-slate-50 w-full" />
+                                </div>
+                                <input type="email" placeholder="Email Address" class="p-3 rounded-lg border border-slate-200 bg-slate-50 w-full" />
+                                <input type="tel" placeholder="Phone Number" class="p-3 rounded-lg border border-slate-200 bg-slate-50 w-full" />
+                                <div class="pt-2">
+                                   <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Preferred Date</label>
+                                   <div class="flex items-center bg-slate-50 border border-slate-200 rounded-lg p-3">
+                                       <i data-lucide="calendar" class="text-slate-400 mr-2 h-5 w-5"></i>
+                                       <input type="date" class="bg-transparent w-full outline-none text-slate-700" />
+                                   </div>
+                                </div>
+                                
+                                <button class="w-full bg-accent-500 hover:bg-accent-600 text-white py-4 rounded-xl font-bold flex items-center justify-center transition-all shadow-lg shadow-accent-500/30 mt-4">
+                                    Confirm Appointment
+                                </button>
+                                <button id="back-btn" class="w-full text-slate-500 text-sm hover:text-slate-800">
+                                    Back to Estimate
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Panel: Results -->
+                    <div class="md:col-span-2 bg-slate-50 border-l border-slate-200 p-8 flex flex-col justify-center">
+                        
+                        <!-- Empty State -->
+                        <div id="result-empty" class="text-center text-slate-400">
+                            <div class="w-20 h-20 bg-slate-200 rounded-full mx-auto mb-4 flex items-center justify-center">
+                                <i data-lucide="send" class="h-10 w-10 text-slate-400 ml-1"></i>
+                            </div>
+                            <p class="font-medium">Enter your items to see the magic happen.</p>
+                            <p class="text-xs mt-2 text-slate-400">Estimates are based on standard volume rates.</p>
+                        </div>
+
+                        <!-- Result State -->
+                        <div id="result-content" class="hidden space-y-6 animate-fadeIn">
+                            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+                                <span class="text-xs font-bold text-slate-400 uppercase">Estimated Volume</span>
+                                <p id="result-volume" class="text-2xl font-bold text-liberator-600 mt-1">--</p>
+                            </div>
+                            
+                            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+                                <span class="text-xs font-bold text-slate-400 uppercase">Price Range</span>
+                                <div class="flex items-baseline mt-1">
+                                    <p id="result-price-low" class="text-3xl font-extrabold text-slate-900">$0</p>
+                                    <span class="text-slate-400 mx-2">-</span>
+                                    <p id="result-price-high" class="text-3xl font-extrabold text-slate-900">$0</p>
+                                </div>
+                            </div>
+
+                            <div class="bg-liberator-50 p-4 rounded-xl border border-liberator-100">
+                                <p id="result-explanation" class="text-sm text-liberator-900 italic">"..."</p>
+                            </div>
+
+                            <button id="book-now-btn" class="w-full bg-accent-500 text-white py-3 rounded-lg font-bold hover:bg-accent-600 transition-colors">
+                                Looks Good? Book Now
+                            </button>
+                        </div>
+
+                        <!-- Success State (Step 2 Right Side) -->
+                        <div id="result-success" class="hidden text-center">
+                             <div class="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                                 <i data-lucide="check" class="h-8 w-8 text-green-600"></i>
+                             </div>
+                             <h4 class="font-bold text-slate-900 text-xl">Almost Free!</h4>
+                             <p class="text-slate-500 mt-2 text-sm">Fill out your details to lock in this estimated range. We'll confirm the final price upon arrival.</p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Section -->
+    <section id="process" class="py-24 bg-white relative overflow-hidden">
+        <div class="absolute top-1/2 left-0 w-full h-1 bg-slate-100 -translate-y-1/2 hidden md:block z-0"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900">How It Works</h2>
+                <p class="mt-4 text-slate-600">Simplicity is our specialty.</p>
+            </div>
+            <div class="grid md:grid-cols-4 gap-8">
+                <!-- Step 1 -->
+                <div class="relative bg-white p-6 rounded-xl text-center md:text-left">
+                    <div class="w-12 h-12 bg-slate-900 text-white rounded-full flex items-center justify-center font-bold text-xl mb-4 mx-auto md:mx-0 shadow-lg shadow-slate-900/20 relative z-10">1</div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-2">Book Online</h3>
+                    <p class="text-slate-500">Use our AI estimator or call to schedule a window that works for you.</p>
+                </div>
+                <!-- Step 2 -->
+                <div class="relative bg-white p-6 rounded-xl text-center md:text-left">
+                    <div class="w-12 h-12 bg-slate-900 text-white rounded-full flex items-center justify-center font-bold text-xl mb-4 mx-auto md:mx-0 shadow-lg shadow-slate-900/20 relative z-10">2</div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-2">We Arrive</h3>
+                    <p class="text-slate-500">Our uniformed team calls 20 mins before arrival and gives a firm price.</p>
+                </div>
+                <!-- Step 3 -->
+                <div class="relative bg-white p-6 rounded-xl text-center md:text-left">
+                    <div class="w-12 h-12 bg-slate-900 text-white rounded-full flex items-center justify-center font-bold text-xl mb-4 mx-auto md:mx-0 shadow-lg shadow-slate-900/20 relative z-10">3</div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-2">We Load</h3>
+                    <p class="text-slate-500">You point, we lift. We sweep up the area afterwards.</p>
+                </div>
+                <!-- Step 4 -->
+                <div class="relative bg-white p-6 rounded-xl text-center md:text-left">
+                    <div class="w-12 h-12 bg-slate-900 text-white rounded-full flex items-center justify-center font-bold text-xl mb-4 mx-auto md:mx-0 shadow-lg shadow-slate-900/20 relative z-10">4</div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-2">Freedom</h3>
+                    <p class="text-slate-500">We haul it away to be donated, recycled, or disposed of responsibly.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section id="testimonials" class="py-24 bg-liberator-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900">Happy Customers</h2>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Review 1 -->
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 flex flex-col relative">
+                    <i data-lucide="quote" class="absolute top-6 right-6 text-liberator-100 h-10 w-10"></i>
+                    <div class="flex text-yellow-400 mb-4">★★★★★</div>
+                    <p class="text-slate-600 mb-6 italic relative z-10 flex-grow">"I was overwhelmed with a garage full of junk. Liberator showed up on time, gave me a fair price, and cleared it all in 45 minutes. Truly liberating!"</p>
+                    <div>
+                        <p class="font-bold text-slate-900">Sarah Jenkins</p>
+                        <p class="text-slate-400 text-sm">Verified Customer</p>
+                    </div>
+                </div>
+                <!-- Review 2 -->
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 flex flex-col relative">
+                    <i data-lucide="quote" class="absolute top-6 right-6 text-liberator-100 h-10 w-10"></i>
+                    <div class="flex text-yellow-400 mb-4">★★★★★</div>
+                    <p class="text-slate-600 mb-6 italic relative z-10 flex-grow">"Best quote experience I've had. The AI tool gave me a ballpark, and the crew stuck to the lower end of the range. Highly recommend."</p>
+                    <div>
+                        <p class="font-bold text-slate-900">Mike Ross</p>
+                        <p class="text-slate-400 text-sm">Verified Customer</p>
+                    </div>
+                </div>
+                <!-- Review 3 -->
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 flex flex-col relative">
+                    <i data-lucide="quote" class="absolute top-6 right-6 text-liberator-100 h-10 w-10"></i>
+                    <div class="flex text-yellow-400 mb-4">★★★★★</div>
+                    <p class="text-slate-600 mb-6 italic relative z-10 flex-grow">"Professional, polite, and they swept up afterwards! I didn't have to lift a finger."</p>
+                    <div>
+                        <p class="font-bold text-slate-900">Elena Rodriguez</p>
+                        <p class="text-slate-400 text-sm">Verified Customer</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-300 py-16 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-12">
+                <div class="col-span-1 md:col-span-1">
+                    <div class="flex items-center mb-6">
+                        <i data-lucide="truck" class="h-8 w-8 text-accent-500 mr-2"></i>
+                        <span class="font-bold text-2xl text-white">LIBERATOR</span>
+                    </div>
+                    <p class="text-slate-400 mb-6">Reclaiming space, one truckload at a time. Professional, eco-friendly junk removal services.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-slate-400 hover:text-white transition-colors"><i data-lucide="facebook" class="h-5 w-5"></i></a>
+                        <a href="#" class="text-slate-400 hover:text-white transition-colors"><i data-lucide="instagram" class="h-5 w-5"></i></a>
+                        <a href="#" class="text-slate-400 hover:text-white transition-colors"><i data-lucide="twitter" class="h-5 w-5"></i></a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold text-lg mb-6">Services</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="hover:text-accent-500 transition-colors">Residential Removal</a></li>
+                        <li><a href="#" class="hover:text-accent-500 transition-colors">Commercial Cleanout</a></li>
+                        <li><a href="#" class="hover:text-accent-500 transition-colors">Construction Debris</a></li>
+                        <li><a href="#" class="hover:text-accent-500 transition-colors">E-Waste Recycling</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold text-lg mb-6">Company</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="hover:text-accent-500 transition-colors">About Us</a></li>
+                        <li><a href="#" class="hover:text-accent-500 transition-colors">Pricing</a></li>
+                        <li><a href="#" class="hover:text-accent-500 transition-colors">Careers</a></li>
+                        <li><a href="#" class="hover:text-accent-500 transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold text-lg mb-6">Contact Us</h4>
+                    <ul class="space-y-4">
+                        <li class="flex items-start">
+                            <i data-lucide="phone" class="h-5 w-5 text-accent-500 mr-3 mt-1"></i>
+                            <span>(555) 123-4567</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i data-lucide="mail" class="h-5 w-5 text-accent-500 mr-3 mt-1"></i>
+                            <span>hello@liberatorjunk.com</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i data-lucide="map-pin" class="h-5 w-5 text-accent-500 mr-3 mt-1"></i>
+                            <span>123 Freedom Way,<br/>Cityville, ST 12345</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-slate-800 mt-12 pt-8 text-center text-sm text-slate-500">
+                <p>&copy; 2024 Liberator Junk Removal. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Initialize Lucide Icons -->
+    <script>
+        lucide.createIcons();
+    </script>
+
+    <!-- Main Logic Script -->
+    <script type="module">
+        import { GoogleGenAI, Type } from "@google/genai";
+
+        // --- Configuration & Initialization ---
+        // Shim for process.env.API_KEY if running statically
+        if (typeof process === 'undefined') {
+            window.process = { env: { API_KEY: '' } }; // Placeholder prevents immediate crash
+        }
+        
+        // Initialize Gemini
+        // Note: For GitHub Pages, you must either inject this key during build or manually replace it here.
+        const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+
+        // --- Navbar Logic ---
+        const navbar = document.getElementById('navbar');
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const logoText = document.getElementById('logo-text');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+        const mobileIcon = mobileMenuBtn.querySelector('i');
+
+        // Scroll Effect
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 20) {
+                navbar.classList.add('bg-white/95', 'backdrop-blur-sm', 'shadow-md', 'py-3');
+                navbar.classList.remove('bg-transparent', 'py-5');
+                logoText.classList.remove('text-white');
+                logoText.classList.add('text-slate-900');
+                mobileMenuBtn.classList.remove('text-white');
+                mobileMenuBtn.classList.add('text-slate-900');
+                navLinks.forEach(link => {
+                    link.classList.remove('text-white');
+                    link.classList.add('text-slate-800');
+                });
+            } else {
+                navbar.classList.remove('bg-white/95', 'backdrop-blur-sm', 'shadow-md', 'py-3');
+                navbar.classList.add('bg-transparent', 'py-5');
+                logoText.classList.remove('text-slate-900');
+                logoText.classList.add('text-white');
+                mobileMenuBtn.classList.remove('text-slate-900');
+                mobileMenuBtn.classList.add('text-white');
+                navLinks.forEach(link => {
+                    link.classList.remove('text-slate-800');
+                    link.classList.add('text-white');
+                });
+            }
+        });
+
+        // Mobile Menu Toggle
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Close Mobile Menu on Click
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // --- Quote Form Logic ---
+        const descInput = document.getElementById('quote-description');
+        const analyzeBtn = document.getElementById('analyze-btn');
+        const btnTextDefault = document.getElementById('btn-text-default');
+        const btnTextLoading = document.getElementById('btn-text-loading');
+        
+        const resultContent = document.getElementById('result-content');
+        const resultEmpty = document.getElementById('result-empty');
+        const resultSuccess = document.getElementById('result-success'); // Step 2 right side
+        
+        const step1Content = document.getElementById('step-1-content');
+        const step2Content = document.getElementById('step-2-content');
+        const bookNowBtn = document.getElementById('book-now-btn');
+        const backBtn = document.getElementById('back-btn');
+
+        // Step Indicators
+        const step1Ind = document.getElementById('step-indicator-1');
+        const step1Text = document.getElementById('step-text-1');
+        const step2Ind = document.getElementById('step-indicator-2');
+        const step2Text = document.getElementById('step-text-2');
+
+        // Helper to enable/disable button
+        descInput.addEventListener('input', (e) => {
+            analyzeBtn.disabled = !e.target.value.trim();
+            analyzeBtn.classList.toggle('opacity-50', !e.target.value.trim());
+            analyzeBtn.classList.toggle('cursor-not-allowed', !e.target.value.trim());
+        });
+
+        async function getJunkEstimate(description) {
+            try {
+                const modelId = "gemini-2.5-flash"; 
+                const response = await ai.models.generateContent({
+                    model: modelId,
+                    contents: `You are an expert junk removal estimator for a company called 'Liberator Junk Removal'. 
+                    Analyze the following list of items provided by a customer and estimate the volume relative to a standard 15 cubic yard truck.
+                    
+                    Customer Input: "${description}"
+                    
+                    Provide a realistic price range. Assume a minimum charge of $99 and a full truck load is roughly $599.
+                    Scale linearly but account for difficulty (heavy items, hazardous materials - though note we don't take hazardous chemicals).
+                    
+                    Return JSON.`,
+                    config: {
+                        responseMimeType: "application/json",
+                        responseSchema: {
+                            type: Type.OBJECT,
+                            properties: {
+                                volumeLabel: { type: Type.STRING },
+                                priceLow: { type: Type.INTEGER },
+                                priceHigh: { type: Type.INTEGER },
+                                explanation: { type: Type.STRING },
+                                category: { type: Type.STRING },
+                            },
+                            required: ["volumeLabel", "priceLow", "priceHigh", "explanation", "category"],
+                        },
+                    },
+                });
+
+                if (response.text) {
+                    return JSON.parse(response.text);
+                }
+                throw new Error("No response");
+            } catch (error) {
+                console.error("Gemini estimation failed:", error);
+                // Fallback
+                return {
+                    volumeLabel: "Custom Quote Required",
+                    priceLow: 99,
+                    priceHigh: 150,
+                    explanation: "We couldn't automatically estimate this load. Please contact us directly for a precision quote.",
+                    category: "General",
+                };
+            }
+        }
+
+        analyzeBtn.addEventListener('click', async () => {
+            const description = descInput.value;
+            if(!description) return;
+
+            // Loading State
+            analyzeBtn.disabled = true;
+            btnTextDefault.classList.add('hidden');
+            btnTextLoading.classList.remove('hidden');
+
+            const estimate = await getJunkEstimate(description);
+
+            // Populate Results
+            document.getElementById('result-volume').innerText = estimate.volumeLabel;
+            document.getElementById('result-price-low').innerText = `$${estimate.priceLow}`;
+            document.getElementById('result-price-high').innerText = `$${estimate.priceHigh}`;
+            document.getElementById('result-explanation').innerText = `"${estimate.explanation}"`;
+
+            // Show Results
+            resultEmpty.classList.add('hidden');
+            resultContent.classList.remove('hidden');
+
+            // Reset Button
+            analyzeBtn.disabled = false;
+            btnTextDefault.classList.remove('hidden');
+            btnTextLoading.classList.add('hidden');
+        });
+
+        // Switch to Step 2
+        bookNowBtn.addEventListener('click', () => {
+            // Update Indicators
+            step1Ind.classList.replace('bg-accent-500', 'bg-green-500');
+            step1Ind.innerHTML = '<i data-lucide="check" class="h-4 w-4"></i>';
+            step1Text.classList.replace('text-slate-900', 'text-slate-400');
+            
+            step2Ind.classList.replace('bg-slate-200', 'bg-accent-500');
+            step2Ind.classList.replace('text-slate-500', 'text-white');
+            step2Text.classList.replace('text-slate-400', 'text-slate-900');
+
+            // Toggle Content
+            step1Content.classList.add('hidden');
+            step2Content.classList.remove('hidden');
+
+            // Toggle Right Side
+            resultContent.classList.add('hidden');
+            resultSuccess.classList.remove('hidden');
+            
+            // Re-render icons for the checkmark we just injected
+            lucide.createIcons();
+        });
+
+        // Back to Step 1
+        backBtn.addEventListener('click', () => {
+             // Reset Indicators
+            step1Ind.classList.replace('bg-green-500', 'bg-accent-500');
+            step1Ind.innerText = '1';
+            step1Text.classList.replace('text-slate-400', 'text-slate-900');
+            
+            step2Ind.classList.replace('bg-accent-500', 'bg-slate-200');
+            step2Ind.classList.replace('text-white', 'text-slate-500');
+            step2Text.classList.replace('text-slate-900', 'text-slate-400');
+
+            // Toggle Content
+            step2Content.classList.add('hidden');
+            step1Content.classList.remove('hidden');
+
+             // Toggle Right Side
+            resultSuccess.classList.add('hidden');
+            resultContent.classList.remove('hidden');
+        });
+
+    </script>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>
